@@ -14,7 +14,7 @@
       sizes="16x16"
       href="{{ asset('assets/images/favicon.png') }}"
     />
-    <title>Si Perdi APP</title>
+    <title>SPK Sayur</title>
     <style>
     body {
         font-family: 'Nunito', sans-serif;

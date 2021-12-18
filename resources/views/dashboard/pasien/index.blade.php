@@ -33,7 +33,15 @@
                 <tr>
                 <th scope="row">{{ $loop->iteration }}</th>
                 <td>{{ $pasien->nama }}</td>
-                <td>Show|Update|Delete</td>
+                <td>
+                    <a href="/pasien/{{ $pasien->id }}" class="btn btn-info"><i class="mdi mdi-eye"></i></a>|
+                    <a href="/pasien/{{ $pasien->id }}/edit" class="btn btn-warning"><i class="mdi mdi-table-edit"></i></a>|
+                    <form action="/pasien/{{ $pasien->id }}" method="post" class="d-inline">
+                    @method('delete')
+                    @csrf
+                    <button class="btn btn-danger border-0"><i class="mdi mdi-delete-empty"></i></button>
+                    </form>
+                </td>
                 </tr>
             @endforeach
             </tbody>

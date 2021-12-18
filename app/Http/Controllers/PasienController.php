@@ -26,7 +26,7 @@ class PasienController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.pasien.create');
     }
 
     /**
@@ -37,7 +37,15 @@ class PasienController extends Controller
      */
     public function store(Request $request)
     {
-        //
+    $validate = $request->validate([
+        'nama' => 'required',
+        'lokasi' => 'required'
+    ]);
+    
+    $validate['user_id'] = auth()->user()->id;
+
+    Pasien::create($validate);
+    return redirect('/pasien')->with('success','Added Successfully!');
     }
 
     /**
@@ -46,9 +54,12 @@ class PasienController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Pasien $pasien)
     {
-        //
+       
+        return view('dashboard.pasien.show',[
+            'pasiens' => Pasien::find($pasien)
+        ]);
     }
 
     /**
@@ -57,9 +68,11 @@ class PasienController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Pasien $pasien)
     {
-        //
+        return view('dashboard.pasien.edit',[
+            'pasiens' => Pasien::with('user')->find($pasien)
+        ]);
     }
 
     /**
@@ -69,9 +82,18 @@ class PasienController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pasien $pasien)
     {
-        //
+        $rules = [
+            'nama' => 'required',
+            'lokasi' => 'required'
+        ];
+
+        $validate['user_id'] = auth()->user()->id;
+        $validate = $request->validate($rules);
+
+        Pasien::where('id', $pasien->id)->update($validate);
+        return redirect('/pasien')->with('success','Updated Successfully');
     }
 
     /**
@@ -80,8 +102,9 @@ class PasienController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pasien $pasien)
     {
-        //
+        Pasien::destroy($pasien->id);
+        return redirect('/pasien')->with('success','Deleted Successfully');
     }
 }
